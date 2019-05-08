@@ -5,10 +5,12 @@ class Api::ProductsController < ApplicationController
   end
 
   def garlic_press_action
+    @product = Product.find_by(name:"Garlic Press")
     render "garlic_press.json.jbuilder"
   end
 
   def cheese_grater_action
+    @product = Product.find_by(name:"Cheese Grater")
     render "cheese_grater.json.jbuilder"
   end
 
