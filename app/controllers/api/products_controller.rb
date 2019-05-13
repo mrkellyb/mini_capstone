@@ -1,24 +1,41 @@
 class Api::ProductsController < ApplicationController
-  def all_products_action
+
+  def index
     @products = Product.all
-    render "all_products.json.jbuilder"
+    render "index.json.jbuilder"
   end
 
-  def garlic_press_action
-    @product = Product.find_by(name:"Garlic Press")
-    render "garlic_press.json.jbuilder"
+  def show
+    @product = Product.find(params[:id])
+    render "show.json.jbuilder"
   end
 
-  def cheese_grater_action
-    @product = Product.find_by(name:"Cheese Grater")
-    render "cheese_grater.json.jbuilder"
+  def create
+    @product = Product.new(
+        name: params[:name],
+        price: params[:price],
+        description: params[:description]
+      )
+    @product.save
+    render "show.json.jbuilder"
   end
 
-  def grill_action
-    render "grill.json.jbuilder"
+  def update
+    @product = Product.find(params["id"])
+
+    @product.name = params[:name] || @product.name
+    @product.price = params[:price] || @product.price
+    @product.description = params[:description] || @product.description
+    @product.image_url = params[:image_url] || @product.image_url
+
+    @product.save
+    render "show.json.jbuilder"
   end
 
-  def blender
-    render "blender.json.jbuilder"
+  def destroy
+    @product = Product.find(params["id"])
+    @product.destroy
+    render json: {message: "Destroyed"}
   end
+
 end
