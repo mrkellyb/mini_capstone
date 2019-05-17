@@ -2,6 +2,7 @@
   json.name product.name
   json.image_url  product.image_url
   json.description product.description
+  json.price product.price
   json.discounted product.is_discounted?
 
   json.formatted do
