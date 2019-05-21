@@ -1,5 +1,7 @@
 class Api::ProductsController < ApplicationController
 
+  before_action :authenticate_user
+
   def index
     @products = Product.all #.order(:id)
 
@@ -8,7 +10,7 @@ class Api::ProductsController < ApplicationController
     end
 
     if params[:discount]
-      @products = @products.where("price < 10")
+      @products = @products.where("price < ?", 10)
     end
 
     if params[:sort] == "price"
@@ -18,15 +20,6 @@ class Api::ProductsController < ApplicationController
         @products = @products.order(:price)
       end
     end
-
-    # @products = Product.where("name iLIKE ?", "%#{params[:search]}%").order(:id)
-    # @products = Product.where("price < 10", "%#{params[:discount]}%")
-    # @products = Product.all.order(:price => "%#{params[:sort]}%")
-
-
-
-
-
 
     render "index.json.jbuilder"
   end
@@ -40,7 +33,6 @@ class Api::ProductsController < ApplicationController
     @product = Product.new(
         name: params[:name],
         price: params[:price],
-        image_url: params[:image_url],
         description: params[:description]
       )
     if @product.save
@@ -56,7 +48,6 @@ class Api::ProductsController < ApplicationController
     @product.name = params[:name] || @product.name
     @product.price = params[:price] || @product.price
     @product.description = params[:description] || @product.description
-    @product.image_url = params[:image_url] || @product.image_url
 
     if @product.save
       render "show.json.jbuilder"
