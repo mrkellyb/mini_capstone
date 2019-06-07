@@ -1,11 +1,11 @@
   json.id product.id
   json.name product.name
+  json.price product.price 
   json.description product.description
-  json.price product.price
   json.discounted product.is_discounted?
   json.supplier_name product.supplier.name
   json.images product.images
-  json.current_user current_user
+  json.category_names product.category_names
 
 
   json.formatted do

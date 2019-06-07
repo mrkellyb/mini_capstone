@@ -1,0 +1,13 @@
+<h1>Your Cooking Store</h1>
+
+<h3>Full Product List</h3>
+<hr>
+
+<% @products.each do |product| %>
+<p><b>Name</b>: <%= product.name %></p>
+<p><b>Price</b>: <%= product.price %></p>
+<p><b>Description</b>: <%= product.description %></p>
+
+
+<hr>
+<% end %>

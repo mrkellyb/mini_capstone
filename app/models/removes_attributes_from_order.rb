@@ -1,0 +1,2 @@
+class RemovesAttributesFromOrder < ApplicationRecord
+end

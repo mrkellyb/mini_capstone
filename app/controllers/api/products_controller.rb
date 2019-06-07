@@ -1,9 +1,9 @@
 class Api::ProductsController < ApplicationController
 
-  before_action :authenticate_user
+  before_action :authenticate_admin, except: [:index, :show]
 
   def index
-    @products = Product.all #.order(:id)
+    @products = Product.all.order(:id)
 
     if params[:search]
       @products = @products.where("name iLIKE ?", "%#{params[:search]}%")
@@ -21,11 +21,17 @@ class Api::ProductsController < ApplicationController
       end
     end
 
+    if params[:category]
+      category = Category.find_by(name: params[:category])
+      @products = category.products
+    end
+
     render "index.json.jbuilder"
   end
 
   def show
-    @product = Product.find(params[:id])
+    product_id  = params[:id]
+    @product = Product.find_by(id: product_id)
     render "show.json.jbuilder"
   end
 
@@ -36,6 +42,7 @@ class Api::ProductsController < ApplicationController
         description: params[:description]
       )
     if @product.save
+      Image.create(url: params[:image_url], product_id: @product_id)
       render "show.json.jbuilder"
     else
       render json: {errors: @product.errors.full_messages}, status: :unprocessable_entity
